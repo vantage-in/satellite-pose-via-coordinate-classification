@@ -60,7 +60,7 @@ model = dict(
         type='PoseDataPreprocessor',
         mean=[123.675, 116.28, 103.53],
         std=[58.395, 57.12, 57.375],
-        bgr_to_rgb=True),
+        bgr_to_rgb=True,
         # --- 통합 증강 프레임워크 적용 ---
         batch_augments=[
             dict(
@@ -81,8 +81,7 @@ model = dict(
                 # RandConv 설정
                 randconv_kernel_size=3
             )
-        ]
-        ),
+        ]),
     backbone=dict(
         _scope_='mmdet',
         type='CSPNeXt', # the ImageNet classification pre-trained weights of the CSPNeXt backbone 
