@@ -1,11 +1,18 @@
 # my_spn_aug.py
 
 import albumentations as A
-from albumentations.augmentations.transforms import (
-    RandomBrightnessContrast, GaussianBlur, MedianBlur, Defocus,
-    GaussNoise, ISONoise, MultiplicativeNoise, Posterize, Sharpen,
-    Solarize, Spatter, Equalize, RandomGamma, RandomSunFlare
+
+#'pixel' 관련 증강
+from albumentations.augmentations.pixel.transforms import (
+    RandomBrightnessContrast, Posterize, Sharpen,
+    Solarize, Spatter, Equalize, RandomGamma, RandomSunFlare, GaussNoise, ISONoise, MultiplicativeNoise
 )
+# 'blur' 관련 증강
+from albumentations.augmentations.blur.transforms import (
+    GaussianBlur, MedianBlur, Defocus
+)
+# 합성(composition) 유틸리티
+from albumentations.core.composition import OneOf
 from albumentations.core.composition import OneOf
 from mmpose.registry import TRANSFORMS
 import numpy as np

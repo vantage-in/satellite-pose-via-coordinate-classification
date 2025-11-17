@@ -1,8 +1,8 @@
 _base_ = ['mmpose::_base_/default_runtime.py']
 
 import_from = [
-    'cpu_augmentor',
-    'tensor_augmentor'
+    'satellite.cpu_augmentor',
+    'satellite.tensor_augmentor'
 ]
 
 # common setting

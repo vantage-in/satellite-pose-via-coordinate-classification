@@ -7,13 +7,13 @@ from torch.nn.modules.utils import _pair
 from typing import List, Optional, Tuple
 
 from mmpose.registry import MODELS
-from mmpose.utils.typing import DataSample
+from mmpose.structures import PoseDataSample as DataSample
 
 # ----------------------------------------------------------------------
 # 의존성 임포트 (라이브러리 설치 필요)
 # ----------------------------------------------------------------------
 try:
-    from style-augmentation.styleaug import StyleAugmentor
+    from styleaug import StyleAugmentor
 except ImportError:
     raise ImportError(
         'StyleAugment 라이브러리가 필요합니다. '
