@@ -1,3 +1,6 @@
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 # Copyright (c) OpenMMLab. All rights reserved.
 import argparse
 import os

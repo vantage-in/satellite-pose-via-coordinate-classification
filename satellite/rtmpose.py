@@ -28,12 +28,12 @@ num_keypoints = 11
 input_size = (224, 224)
 
 # runtime
-max_epochs = 30
+max_epochs = 300
 base_lr = 1e-3
-train_batch_size = 32
+train_batch_size = 256
 val_batch_size = 32
 
-train_cfg = dict(max_epochs=max_epochs)#, val_interval=5)
+train_cfg = dict(max_epochs=max_epochs, val_interval=50)
 randomness = dict(seed=42)
 
 # optimizer
@@ -51,7 +51,7 @@ param_scheduler = [
         start_factor=1.0e-3,
         by_epoch=True, 
         begin=0,
-        end=1,
+        end=5,
         convert_to_iter_based=True),
     dict(
         type='CosineAnnealingLR', # 절반부터 시작
