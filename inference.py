@@ -100,8 +100,8 @@ def process_folder(config_file, checkpoint_file, input_folder, output_folder, sa
 # --- 실행 설정 ---
 if __name__ == '__main__':
     # 경로 설정 (사용자 환경에 맞게 수정 필요)
-    CONFIG_FILE = 'satellite/rtmpose.py'               # 설정 파일 경로
-    CHECKPOINT_FILE = '/workspace/epoch_30.pth'  # 체크포인트 경로
+    CONFIG_FILE = 'satellite/rtmpose-t.py'               # 설정 파일 경로
+    CHECKPOINT_FILE = '/workspace/rtmpose-t/epoch_350.pth'  # 체크포인트 경로
     
     INPUT_FOLDER = '/workspace/speedplusv2/val/'                 # 테스트 이미지가 있는 폴더
     OUTPUT_FOLDER = 'vis_results/'                     # 결과를 저장할 폴더

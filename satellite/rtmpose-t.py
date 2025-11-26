@@ -1,4 +1,4 @@
-_base_ = ['mmpose::_base_/default_runtime.py']
+_base_ = ['../configs/_base_/default_runtime.py']
 
 # import_from = [
 #     'satellite.cpu_augmentor',
@@ -31,7 +31,7 @@ input_size = (224, 224)
 max_epochs = 700
 stage2_num_epochs = 600
 base_lr = 3e-3
-train_batch_size = 128
+train_batch_size = 256
 val_batch_size = 32
 
 train_cfg = dict(max_epochs=max_epochs, val_interval=50)
