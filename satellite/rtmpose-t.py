@@ -171,7 +171,7 @@ train_pipeline_stage2 = [
     dict(type='LoadImage', backend_args=backend_args),
     dict(type='SetFullImageBBox'),
     dict(type='GetBBoxCenterScale'),
-    dict(type='SPNAugmentation', n=2, p=0.8), # n=논문에서 사용한 N값, p=적용 확률
+    dict(type='SPNAugmentation', n=3, p=0.9), # n=논문에서 사용한 N값, p=적용 확률
     dict(type='TopdownAffine', input_size=input_size),
     dict(type='GenerateTarget', encoder=codec), # label 변환
     dict(type='PackPoseInputs')
@@ -214,7 +214,7 @@ test_dataloader = val_dataloader
 
 # hooks
 default_hooks = dict(
-    checkpoint=dict(save_best='coco/AP', rule='greater', max_keep_ckpts=1))
+    checkpoint=dict(save_best='coco/AP', rule='greater', max_keep_ckpts=10, interval=10))
 
 custom_hooks = [
     # Turn off EMA while training the tiny model
