@@ -105,13 +105,14 @@ class CombinedAugmentation(nn.Module):
     def __init__(self,
                  mean: List[float] = [123.675, 116.28, 103.53],
                  std: List[float] = [58.395, 57.12, 57.375],
-                 # prob_ 인자들은 호환성을 위해 남겨두지만, 내부 로직에서는 1/4로 고정됨
-                 prob_style: float = 0.25, 
-                 prob_deep: float = 0.25,
-                 prob_randconv: float = 0.25,
                  cae_weights_path: str = '/root/RTMPose/satellite/CAE_Weight/model_final.state',
                  deepaug_sigma: float = 0.1,
-                 randconv_kernel_size: int = 3):
+                 randconv_kernel_size: int = 3,
+                 
+                 prob_identity: float = 0.7,
+                 prob_randconv: float = 0.1,
+                 prob_style: float = 0.1,
+                 prob_deep: float = 0.1):
         super().__init__()
         
         self.deepaug_sigma = deepaug_sigma
@@ -146,6 +147,9 @@ class CombinedAugmentation(nn.Module):
             groups=3,
             bias=False,
             padding_mode='reflect')
+        
+        probs = torch.tensor([prob_identity, prob_randconv, prob_style, prob_deep])
+        self.probs = probs / probs.sum()
 
     def _load_cae_model(self, weights_path):
         try:
@@ -195,9 +199,8 @@ class CombinedAugmentation(nn.Module):
         current_tensor = (inputs_unnormalized / 255.0).clamp(0.0, 1.0)
 
         # --- 2. 배타적 선택 로직 (Mutually Exclusive Selection) ---
-        # 0: None, 1: RandConv, 2: StyleAug, 3: DeepAug (각 25%)
-        choices = torch.randint(0, 4, (B,), device=device)
-        self.latest_choices = choices
+        # 0: None, 1: RandConv, 2: StyleAug, 3: DeepAug
+        choices = torch.multinomial(self.probs, B, replacement=True).to(device)
 
         # CASE 1: RandConv 적용 (Choice == 1)
         # 해당 인덱스만 추출하여 연산하므로 효율적임

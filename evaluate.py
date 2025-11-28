@@ -10,8 +10,8 @@ from tqdm import tqdm
 from mmpose.apis import init_model, inference_topdown
 from mmpose.utils import register_all_modules
 
-CONFIG_FILE = 'satellite/rtmpose-t.py'
-CHECKPOINT_FILE = '/workspace/rtmpose-t/epoch_350.pth'
+CONFIG_FILE = 'satellite/rtmpose-m_satellite.py'
+CHECKPOINT_FILE = '/workspace/rtmpose-m/epoch_300.pth'
 
 # 1. GT Pose가 들어있는 파일 (synthetic 폴더)
 POSE_GT_FILE = '/workspace/speedplusv2/synthetic/validation.json' 
