@@ -14,41 +14,7 @@ codec = dict(
     type='SimCCLabel',
     use_dark=False)
 custom_hooks = [
-    dict(
-        ema_type='ExpMomentumEMA',
-        momentum=0.0002,
-        priority=49,
-        type='EMAHook',
-        update_buffers=True),
-    dict(
-        switch_epoch=390,
-        switch_pipeline=[
-            dict(backend_args=dict(backend='local'), type='LoadImage'),
-            dict(type='SetFullImageBBox'),
-            dict(type='GetBBoxCenterScale'),
-            dict(n=1, p=0.2, type='SPNAugmentation'),
-            dict(input_size=(
-                224,
-                224,
-            ), type='TopdownAffine'),
-            dict(
-                encoder=dict(
-                    input_size=(
-                        224,
-                        224,
-                    ),
-                    normalize=False,
-                    sigma=(
-                        4.9,
-                        5.66,
-                    ),
-                    simcc_split_ratio=2.0,
-                    type='SimCCLabel',
-                    use_dark=False),
-                type='GenerateTarget'),
-            dict(type='PackPoseInputs'),
-        ],
-        type='mmdet.PipelineSwitchHook'),
+    dict(_scope_='mmpose', type='SyncBuffersHook'),
 ]
 custom_imports = dict(
     allow_failed_imports=False,
@@ -62,17 +28,19 @@ data_root = '/workspace/speedplusv2/'
 dataset_type = 'CocoDataset'
 default_hooks = dict(
     badcase=dict(
+        _scope_='mmpose',
         badcase_thr=5,
         enable=False,
         metric_type='loss',
         out_dir='badcase',
         type='BadCaseAnalysisHook'),
-    checkpoint=dict(interval=20, type='CheckpointHook'),
-    logger=dict(interval=50, type='LoggerHook'),
-    param_scheduler=dict(type='ParamSchedulerHook'),
-    sampler_seed=dict(type='DistSamplerSeedHook'),
-    timer=dict(type='IterTimerHook'),
-    visualization=dict(enable=False, type='PoseVisualizationHook'))
+    checkpoint=dict(_scope_='mmpose', interval=10, type='CheckpointHook'),
+    logger=dict(_scope_='mmpose', interval=50, type='LoggerHook'),
+    param_scheduler=dict(_scope_='mmpose', type='ParamSchedulerHook'),
+    sampler_seed=dict(_scope_='mmpose', type='DistSamplerSeedHook'),
+    timer=dict(_scope_='mmpose', type='IterTimerHook'),
+    visualization=dict(
+        _scope_='mmpose', enable=False, type='PoseVisualizationHook'))
 default_scope = 'mmpose'
 env_cfg = dict(
     cudnn_benchmark=False,
@@ -86,8 +54,12 @@ launcher = 'none'
 load_from = None
 log_level = 'INFO'
 log_processor = dict(
-    by_epoch=True, num_digits=6, type='LogProcessor', window_size=50)
-max_epochs = 420
+    _scope_='mmpose',
+    by_epoch=True,
+    num_digits=6,
+    type='LogProcessor',
+    window_size=50)
+max_epochs = 300
 model = dict(
     backbone=dict(
         _scope_='mmdet',
@@ -116,10 +88,9 @@ model = dict(
                     116.28,
                     103.53,
                 ],
-                prob_deep=0.05,
-                prob_identity=0.8,
-                prob_randconv=0.1,
-                prob_style=0.05,
+                prob_deep=0.5,
+                prob_randconv=0.5,
+                prob_style=0.5,
                 randconv_kernel_size=3,
                 std=[
                     58.395,
@@ -185,28 +156,30 @@ model = dict(
     type='TopdownPoseEstimator')
 num_keypoints = 11
 optim_wrapper = dict(
-    accumulative_counts=2,
     clip_grad=dict(max_norm=35, norm_type=2),
-    optimizer=dict(lr=0.001, type='AdamW', weight_decay=0.05),
+    optimizer=dict(lr=0.001, type='AdamW', weight_decay=0.0001),
     paramwise_cfg=dict(
         bias_decay_mult=0, bypass_duplicate=True, norm_decay_mult=0),
     type='OptimWrapper')
 param_scheduler = [
     dict(
-        begin=0, by_epoch=False, end=1000, start_factor=1e-05,
-        type='LinearLR'),
-    dict(
-        T_max=210,
-        begin=210,
+        begin=0,
         by_epoch=True,
         convert_to_iter_based=True,
-        end=420,
+        end=5,
+        start_factor=0.001,
+        type='LinearLR'),
+    dict(
+        T_max=150,
+        begin=150,
+        by_epoch=True,
+        convert_to_iter_based=True,
+        end=300,
         eta_min=5e-05,
         type='CosineAnnealingLR'),
 ]
 randomness = dict(seed=42)
 resume = True
-stage2_num_epochs = 30
 test_cfg = dict()
 test_dataloader = dict(
     batch_size=32,
@@ -235,10 +208,10 @@ test_dataloader = dict(
 test_evaluator = dict(
     ann_file='/workspace/speedplusv2/annotations/validation.json',
     type='CocoMetric')
-train_batch_size = 128
-train_cfg = dict(by_epoch=True, max_epochs=420, val_interval=50)
+train_batch_size = 256
+train_cfg = dict(by_epoch=True, max_epochs=300, val_interval=50)
 train_dataloader = dict(
-    batch_size=128,
+    batch_size=256,
     dataset=dict(
         ann_file='annotations/train.json',
         data_mode='topdown',
@@ -249,7 +222,7 @@ train_dataloader = dict(
             dict(backend_args=dict(backend='local'), type='LoadImage'),
             dict(type='SetFullImageBBox'),
             dict(type='GetBBoxCenterScale'),
-            dict(n=2, p=0.4, type='SPNAugmentation'),
+            dict(n=2, p=0.8, type='SPNAugmentation'),
             dict(input_size=(
                 224,
                 224,
@@ -279,33 +252,7 @@ train_pipeline = [
     dict(backend_args=dict(backend='local'), type='LoadImage'),
     dict(type='SetFullImageBBox'),
     dict(type='GetBBoxCenterScale'),
-    dict(n=2, p=0.4, type='SPNAugmentation'),
-    dict(input_size=(
-        224,
-        224,
-    ), type='TopdownAffine'),
-    dict(
-        encoder=dict(
-            input_size=(
-                224,
-                224,
-            ),
-            normalize=False,
-            sigma=(
-                4.9,
-                5.66,
-            ),
-            simcc_split_ratio=2.0,
-            type='SimCCLabel',
-            use_dark=False),
-        type='GenerateTarget'),
-    dict(type='PackPoseInputs'),
-]
-train_pipeline_stage2 = [
-    dict(backend_args=dict(backend='local'), type='LoadImage'),
-    dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
-    dict(n=1, p=0.2, type='SPNAugmentation'),
+    dict(n=2, p=0.8, type='SPNAugmentation'),
     dict(input_size=(
         224,
         224,
@@ -344,9 +291,10 @@ val_pipeline = [
     dict(type='PackPoseInputs'),
 ]
 vis_backends = [
-    dict(type='LocalVisBackend'),
+    dict(_scope_='mmpose', type='LocalVisBackend'),
 ]
 visualizer = dict(
+    _scope_='mmpose',
     name='visualizer',
     type='PoseLocalVisualizer',
     vis_backends=[

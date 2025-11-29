@@ -77,10 +77,10 @@ model = dict(
                 mean=[123.675, 116.28, 103.53], 
                 std=[58.395, 57.12, 57.375],      
                 
-                prob_identity = 0.7,
+                prob_identity = 0.8,
                 prob_randconv = 0.1,
-                prob_style = 0.1,
-                prob_deep = 0.1,
+                prob_style = 0.05,
+                prob_deep = 0.05,
                 
                 # DeepAugment(CAE) 설정
                 cae_weights_path='/root/RTMPose/satellite/CAE_Weight/model_final.state', #
@@ -143,7 +143,7 @@ train_pipeline = [
     dict(type='LoadImage', backend_args=backend_args),
     dict(type='SetFullImageBBox'),
     dict(type='GetBBoxCenterScale'),
-    dict(type='SPNAugmentation', n=2, p=0.5), 
+    dict(type='SPNAugmentation', n=2, p=0.4), 
     dict(type='TopdownAffine', input_size=input_size),
     dict(type='GenerateTarget', encoder=codec), # label 변환
     dict(type='PackPoseInputs')
