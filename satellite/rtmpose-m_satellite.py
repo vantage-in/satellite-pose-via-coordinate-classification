@@ -129,7 +129,7 @@ model = dict(
             beta=10.,
             label_softmax=True),
         decoder=codec),
-    test_cfg=dict(flip_test=True))
+    test_cfg=dict(flip_test=False))
 
 # base dataset settings
 dataset_type = 'CocoDataset'
