@@ -76,10 +76,10 @@ model = dict(
                 mean=[123.675, 116.28, 103.53], 
                 std=[58.395, 57.12, 57.375],      
                 
-                prob_identity = 0.5,
+                prob_identity = 0.4,
                 prob_randconv = 0.2,
                 prob_style = 0.2,
-                prob_deep = 0.1,
+                prob_deep = 0.2,
                 
                 # DeepAugment(CAE) 설정
                 cae_weights_path='/root/RTMPose/satellite/CAE_Weight/model_final.state', #
@@ -141,10 +141,10 @@ backend_args = dict(backend='local')
 train_pipeline = [
     dict(
         type='LoadImageFromDualDir',
-        aux_dir='/root/workspace/speedplusv2/SPIN/', # 질감이 다른 이미지들이 있는 폴더 경로
+        aux_dir='/workspace/speedplusv2/SPIN/', # 질감이 다른 이미지들이 있는 폴더 경로
     ),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(type='GetBBoxCenterScale', padding=1.0),
     dict(type='SPNAugmentation'), 
     dict(type='TopdownAffine', input_size=input_size),
     dict(type='GenerateTarget', encoder=codec), # label 변환
@@ -153,14 +153,14 @@ train_pipeline = [
 val_pipeline = [
     dict(type='LoadImage', backend_args=backend_args),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(type='GetBBoxCenterScale', padding=1.0),
     dict(type='TopdownAffine', input_size=input_size),
     dict(type='PackPoseInputs')
 ]
 train_pipeline_stage2 = [
     dict(type='LoadImage', backend_args=backend_args),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(type='GetBBoxCenterScale', padding=1.0),
     dict(type='SPNAugmentation'), 
     dict(type='TopdownAffine', input_size=input_size),
     dict(type='GenerateTarget', encoder=codec), # label 변환

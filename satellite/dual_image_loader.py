@@ -18,7 +18,7 @@ class LoadImageFromDualDir(BaseTransform):
     """
     def __init__(self, 
                  aux_dir: str, 
-                 prob: float = 0.8,
+                 prob: float = 0.75,
                  aux_suffix: str = '.png', # [추가] 보조 데이터의 확장자 지정
                  to_float32: bool = False,
                  color_type: str = 'color',

@@ -36,7 +36,7 @@ class SPNAugmentation:
 
         # N 선택을 위한 확률 분포 정의
         self.n_choices = [4, 3, 2, 1, 0]
-        self.n_probs = [0.05, 0.1, 0.25, 0.3, 0.3]
+        self.n_probs = [0.1, 0.2, 0.3, 0.2, 0.2]
         
         # 1. RandomSunFlare 변환
         self.flare_transform = RandomSunFlare(p=1.0, src_radius=100)

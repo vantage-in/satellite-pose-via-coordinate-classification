@@ -15,11 +15,17 @@ codec = dict(
     use_dark=False)
 custom_hooks = [
     dict(
+        ema_type='ExpMomentumEMA',
+        momentum=0.0002,
+        priority=49,
+        type='EMAHook',
+        update_buffers=True),
+    dict(
         switch_epoch=390,
         switch_pipeline=[
             dict(backend_args=dict(backend='local'), type='LoadImage'),
             dict(type='SetFullImageBBox'),
-            dict(type='GetBBoxCenterScale'),
+            dict(padding=1.0, type='GetBBoxCenterScale'),
             dict(type='SPNAugmentation'),
             dict(input_size=(
                 224,
@@ -89,17 +95,17 @@ model = dict(
         act_cfg=dict(type='SiLU'),
         arch='P5',
         channel_attention=True,
-        deepen_factor=0.167,
+        deepen_factor=0.67,
         expand_ratio=0.5,
         init_cfg=dict(
             checkpoint=
-            'https://download.openmmlab.com/mmdetection/v3.0/rtmdet/cspnext_rsb_pretrain/cspnext-tiny_imagenet_600e-3a2dd350.pth',
+            'https://download.openmmlab.com/mmdetection/v3.0/rtmdet/cspnext_rsb_pretrain/cspnext-m_8xb256-rsb-a1-600e_in1k-ecb3bbd9.pth',
             prefix='backbone.',
             type='Pretrained'),
         norm_cfg=dict(type='SyncBN'),
         out_indices=(4, ),
         type='CSPNeXt',
-        widen_factor=0.375),
+        widen_factor=0.75),
     data_preprocessor=dict(
         batch_augments=[
             dict(
@@ -112,9 +118,9 @@ model = dict(
                     103.53,
                 ],
                 prob_deep=0.2,
-                prob_identity=0.5,
+                prob_identity=0.4,
                 prob_randconv=0.2,
-                prob_style=0.1,
+                prob_style=0.2,
                 randconv_kernel_size=3,
                 std=[
                     58.395,
@@ -159,7 +165,7 @@ model = dict(
             pos_enc=False,
             s=128,
             use_rel_bias=False),
-        in_channels=384,
+        in_channels=768,
         in_featuremap_size=(
             7,
             7,
@@ -182,7 +188,7 @@ num_keypoints = 11
 optim_wrapper = dict(
     accumulative_counts=2,
     clip_grad=dict(max_norm=35, norm_type=2),
-    optimizer=dict(lr=0.001, type='AdamW', weight_decay=0.0),
+    optimizer=dict(lr=0.001, type='AdamW', weight_decay=0.05),
     paramwise_cfg=dict(
         bias_decay_mult=0, bypass_duplicate=True, norm_decay_mult=0),
     type='OptimWrapper')
@@ -214,7 +220,7 @@ test_dataloader = dict(
         pipeline=[
             dict(backend_args=dict(backend='local'), type='LoadImage'),
             dict(type='SetFullImageBBox'),
-            dict(type='GetBBoxCenterScale'),
+            dict(padding=1.0, type='GetBBoxCenterScale'),
             dict(input_size=(
                 224,
                 224,
@@ -242,10 +248,10 @@ train_dataloader = dict(
         metainfo=dict(from_file='configs/_base_/datasets/custom.py'),
         pipeline=[
             dict(
-                aux_dir='/root/workspace/speedplusv2/SPIN/',
+                aux_dir='/workspace/speedplusv2/SPIN/',
                 type='LoadImageFromDualDir'),
             dict(type='SetFullImageBBox'),
-            dict(type='GetBBoxCenterScale'),
+            dict(padding=1.0, type='GetBBoxCenterScale'),
             dict(type='SPNAugmentation'),
             dict(input_size=(
                 224,
@@ -273,11 +279,9 @@ train_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=True, type='DefaultSampler'))
 train_pipeline = [
-    dict(
-        aux_dir='/root/workspace/speedplusv2/SPIN/',
-        type='LoadImageFromDualDir'),
+    dict(aux_dir='/workspace/speedplusv2/SPIN/', type='LoadImageFromDualDir'),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(padding=1.0, type='GetBBoxCenterScale'),
     dict(type='SPNAugmentation'),
     dict(input_size=(
         224,
@@ -303,7 +307,7 @@ train_pipeline = [
 train_pipeline_stage2 = [
     dict(backend_args=dict(backend='local'), type='LoadImage'),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(padding=1.0, type='GetBBoxCenterScale'),
     dict(type='SPNAugmentation'),
     dict(input_size=(
         224,
@@ -333,7 +337,7 @@ val_evaluator = None
 val_pipeline = [
     dict(backend_args=dict(backend='local'), type='LoadImage'),
     dict(type='SetFullImageBBox'),
-    dict(type='GetBBoxCenterScale'),
+    dict(padding=1.0, type='GetBBoxCenterScale'),
     dict(input_size=(
         224,
         224,
