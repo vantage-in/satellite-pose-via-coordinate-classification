@@ -10,15 +10,15 @@ from tqdm import tqdm
 from mmpose.apis import init_model, inference_topdown
 from mmpose.utils import register_all_modules
 
-CONFIG_FILE = 'satellite/rtmpose-t_satellite_f.py'
-CHECKPOINT_FILE = '/workspace/rtmpose-t_final/epoch_310.pth'
+CONFIG_FILE = 'satellite/rtmpose-m_satellite_f.py'
+CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_420.pth'
 
 # 1. GT Pose가 들어있는 파일 (synthetic 폴더)
-POSE_GT_FILE = '/workspace/speedplusv2/sunlamp/test.json' 
+POSE_GT_FILE = '/workspace/speedplusv2/synthetic/validation.json' 
 # 2. Crop Box 등 이미지 메타정보가 들어있는 파일 (annotations 폴더, COCO 포맷)
-IMAGE_META_FILE = '/workspace/speedplusv2/annotations/test_sunlamp.json'
+IMAGE_META_FILE = '/workspace/speedplusv2/annotations/validation.json'
 
-IMG_ROOT = '/workspace/speedplusv2/sunlamp_preprocessed/'
+IMG_ROOT = '/workspace/speedplusv2/val/'
 MODEL_3D_POINTS_FILE = '/workspace/speedplusv2/tangoPoints.mat'
 CAMERA_FILE = '/workspace/speedplusv2/camera.json'
 
