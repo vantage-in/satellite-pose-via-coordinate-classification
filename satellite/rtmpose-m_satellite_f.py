@@ -4,9 +4,6 @@ custom_imports = dict(
     imports=['cpu_augmentor', 'tensor_augmentor', 'bbox', 'dual_image_loader'],
     allow_failed_imports=False
 )
-# transforms = dict(type='SPNAugmentation', n=2, p=0.8)
-# model = dict(type='CombinedAugmentation')
-# transforms2 = dict(type='SetFullImageBBox')
 
 # common setting
 num_keypoints = 11
@@ -88,7 +85,8 @@ model = dict(
                 # RandConv 설정
                 randconv_kernel_size=3
             )
-        ]),
+        ]
+        ),
     backbone=dict(
         _scope_='mmdet',
         type='CSPNeXt',
@@ -128,7 +126,7 @@ model = dict(
             beta=10.,
             label_softmax=True),
         decoder=codec),
-    test_cfg=dict(flip_test=False))
+    test_cfg=dict(flip_test=False, output_heatmaps=True))
 
 # base dataset settings
 dataset_type = 'CocoDataset'

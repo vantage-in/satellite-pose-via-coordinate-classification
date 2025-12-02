@@ -11,14 +11,14 @@ from mmpose.apis import init_model, inference_topdown
 from mmpose.utils import register_all_modules
 
 CONFIG_FILE = 'satellite/rtmpose-m_satellite_f.py'
-CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_420.pth'
+CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_250.pth'
 
 # 1. GT Pose가 들어있는 파일 (synthetic 폴더)
-POSE_GT_FILE = '/workspace/speedplusv2/synthetic/validation.json' 
+POSE_GT_FILE = '/workspace/speedplusv2/lightbox/test.json' 
 # 2. Crop Box 등 이미지 메타정보가 들어있는 파일 (annotations 폴더, COCO 포맷)
-IMAGE_META_FILE = '/workspace/speedplusv2/annotations/validation.json'
+IMAGE_META_FILE = '/workspace/speedplusv2/annotations/test_lightbox.json'
 
-IMG_ROOT = '/workspace/speedplusv2/val/'
+IMG_ROOT = '/workspace/speedplusv2/lightbox_preprocessed/'
 MODEL_3D_POINTS_FILE = '/workspace/speedplusv2/tangoPoints.mat'
 CAMERA_FILE = '/workspace/speedplusv2/camera.json'
 
@@ -54,7 +54,7 @@ def solve_pnp_epnp(points_3D, points_2D, cameraMatrix, distCoeffs):
     points_2D = np.ascontiguousarray(points_2D).reshape((-1, 1, 2))
 
     success, rvec, tvec = cv2.solvePnP(
-        points_3D, points_2D, cameraMatrix, distCoeffs, flags=cv2.SOLVEPNP_EPNP
+        points_3D, points_2D, cameraMatrix, distCoeffs, flags=cv2.SOLVEPNP_SQPNP
     )
 
     if not success:

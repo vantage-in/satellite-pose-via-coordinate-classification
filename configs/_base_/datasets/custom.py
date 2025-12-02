@@ -76,36 +76,36 @@ dataset_info = dict(
     },
     skeleton_info={
         0:
-        dict(link=('shoulder1', 'shoulder2'), id=0, color=[0, 255, 0]),
+        dict(link=('shoulder1', 'shoulder2'), id=0, color=[51, 153, 255]),
         1:
-        dict(link=('shoulder2', 'shoulder3'), id=1, color=[0, 255, 0]),
+        dict(link=('shoulder2', 'shoulder3'), id=1, color=[51, 153, 255]),
         2:
-        dict(link=('shoulder3', 'shoulder4'), id=2, color=[255, 128, 0]),
+        dict(link=('shoulder3', 'shoulder4'), id=2, color=[51, 153, 255]),
         3:
-        dict(link=('shoulder4', 'shoulder1'), id=3, color=[255, 128, 0]),
+        dict(link=('shoulder4', 'shoulder1'), id=3, color=[51, 153, 255]),
         4:
-        dict(link=('shoulder1', 'ankle1'), id=4, color=[51, 153, 255]),
+        dict(link=('shoulder1', 'ankle1'), id=4, color=[255, 0, 0]),
         5:
-        dict(link=('shoulder2', 'ankle2'), id=5, color=[51, 153, 255]),
+        dict(link=('shoulder2', 'ankle2'), id=5, color=[255, 0, 0]),
         6:
-        dict(link=('shoulder3', 'ankle3'), id=6, color=[51, 153, 255]),
+        dict(link=('shoulder3', 'ankle3'), id=6, color=[255, 0, 0]),
         7:
-        dict(link=('shoulder4', 'ankle4'),id=7, color=[51, 153, 255]),
+        dict(link=('shoulder4', 'ankle4'),id=7, color=[255, 0, 0]),
         8:
-        dict(link=('ankle1', 'ankle2'), id=8, color=[0, 255, 0]),
+        dict(link=('ankle1', 'ankle2'), id=8, color=[255, 128, 0]),
         9:
         dict(
             link=('ankle2', 'ankle3'), id=9, color=[255, 128, 0]),
         10:
-        dict(link=('ankle3', 'ankle4'), id=10, color=[0, 255, 0]),
+        dict(link=('ankle3', 'ankle4'), id=10, color=[255, 128, 0]),
         11:
         dict(link=('ankle4', 'ankle1'), id=11, color=[255, 128, 0]),
         12:
-        dict(link=('shoulder2', 'line1'), id=12, color=[51, 153, 255]),
+        dict(link=('shoulder2', 'line1'), id=12, color=[0, 255, 0]),
         13:
-        dict(link=('shoulder3', 'line2'), id=13, color=[51, 153, 255]),
+        dict(link=('shoulder3', 'line2'), id=13, color=[0, 255, 0]),
         14:
-        dict(link=('shoulder4', 'line3'), id=14, color=[51, 153, 255])
+        dict(link=('shoulder4', 'line3'), id=14, color=[0, 255, 0])
     },
     joint_weights=[
         1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.
