@@ -54,7 +54,7 @@ def solve_pnp_epnp(points_3D, points_2D, cameraMatrix, distCoeffs):
     points_2D = np.ascontiguousarray(points_2D).reshape((-1, 1, 2))
 
     success, rvec, tvec = cv2.solvePnP(
-        points_3D, points_2D, cameraMatrix, distCoeffs, flags=cv2.SOLVEPNP_SQPNP
+        points_3D, points_2D, cameraMatrix, distCoeffs, flags=cv2.SOLVEPNP_EPNP
     )
 
     if not success:
