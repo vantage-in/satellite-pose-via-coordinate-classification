@@ -168,7 +168,7 @@ def run_inference_on_image(model, img_path, out_dir, visualizer):
     return keypoints, scores, out_path
 
 def process_folder(config_file, checkpoint_file, input_folder, output_folder, sample_num=5):
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    device = 'cpu'# 'cuda:0' if torch.cuda.is_available() else 'cpu'
     print(f"Initializing model on {device}...")
     model = init_model(config_file, checkpoint_file, device=device)
     
@@ -207,9 +207,9 @@ def process_folder(config_file, checkpoint_file, input_folder, output_folder, sa
 if __name__ == '__main__':
     # 경로 설정
     CONFIG_FILE = 'satellite/rtmpose-m_satellite_f.py'
-    CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_250.pth'
-    INPUT_FOLDER = '/workspace/speedplusv2/val/'
-    OUTPUT_FOLDER = 'vis_results_sigma_val/'
+    CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_420.pth'
+    INPUT_FOLDER = '/workspace/speedplusv2/sunlamp_preprocessed/'
+    OUTPUT_FOLDER = 'vis_results_sigma_sunlamp/'
     SAMPLE_NUM = 50
 
     try:

@@ -100,11 +100,11 @@ def process_folder(config_file, checkpoint_file, input_folder, output_folder, sa
 # --- 실행 설정 ---
 if __name__ == '__main__':
     # 경로 설정 (사용자 환경에 맞게 수정 필요)
-    CONFIG_FILE = 'satellite/rtmpose-m_satellite_f.py'               # 설정 파일 경로
-    CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_250.pth'  # 체크포인트 경로
+    CONFIG_FILE = 'satellite/rtmpose-s_satellite.py'               # 설정 파일 경로
+    CHECKPOINT_FILE = '/workspace/rtmpose-s/epoch_300.pth'  # 체크포인트 경로
     
-    INPUT_FOLDER = '/workspace/speedplusv2/sunlamp_preprocessed/'                 # 테스트 이미지가 있는 폴더
-    OUTPUT_FOLDER = 'vis_results_sunlamp/'                     # 결과를 저장할 폴더
+    INPUT_FOLDER = '/workspace/speedplusv2/lightbox_preprocessed/'                 # 테스트 이미지가 있는 폴더
+    OUTPUT_FOLDER = 'vis_results_s_lightbox/'                     # 결과를 저장할 폴더
     SAMPLE_NUM = 50                                     # 샘플링할 이미지 개수 (전체를 원하면 매우 큰 수 입력)
 
     try:

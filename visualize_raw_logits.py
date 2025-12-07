@@ -112,10 +112,10 @@ def visualize_logits(config_file, checkpoint_file, img_path, output_dir):
         fig.suptitle(f"ID {i}: {kpt_name} (MM Score: {score:.4f})", fontsize=16)
         
         # X축 Plot (파란색 계열)
-        process_and_plot(ax1, raw_x[i], color_dot='cornflowerblue', color_line='blue', axis_name='X-axis', sigma=5.0)
+        process_and_plot(ax1, raw_x[i], color_dot='cornflowerblue', color_line='blue', axis_name='X-axis', sigma=10.0)
 
         # Y축 Plot (주황색 계열)
-        process_and_plot(ax2, raw_y[i], color_dot='orange', color_line='darkorange', axis_name='Y-axis', sigma=5.0)
+        process_and_plot(ax2, raw_y[i], color_dot='orange', color_line='darkorange', axis_name='Y-axis', sigma=10.0)
 
         ax2.set_xlabel("Bin Index (SimCC Space)")
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
@@ -132,7 +132,7 @@ if __name__ == '__main__':
     CHECKPOINT_FILE = '/workspace/rtmpose-m_f/epoch_250.pth'
     
     # 테스트할 이미지 경로 (직접 지정)
-    TEST_IMAGE = '/workspace/speedplusv2/sunlamp_preprocessed/000338.jpg' 
+    TEST_IMAGE = '/workspace/speedplusv2/sunlamp_preprocessed/001155.jpg' 
     
     OUTPUT_DIR = 'vis_logits_spline/'
 
