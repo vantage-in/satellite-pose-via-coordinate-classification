@@ -20,7 +20,6 @@ Active Debris Removal (ADR) and On-Orbit Servicing (OOS) require precise 6-DoF p
 
 
 
----
 
 ## 🏗️ Architecture
 
@@ -51,7 +50,112 @@ Standard PnP solvers discard uncertainty information. Our method optimizes the p
 
 This refinement strategy improves pose estimation error by up to **25%** compared to standard EPnP solvers.
 
----
+
+
+## 🔧 Installation
+
+```bash
+# Create a conda environment
+conda create -n specc python=3.9 -y
+conda activate specc
+
+# Install PyTorch and CUDA
+conda install pytorch=2.1.2 torchvision=0.16.2 torchaudio=2.1.2 pytorch-cuda=12.1 -c pytorch -c nvidia
+
+# Install OpenMIM
+pip install -U openmim
+
+# Install MMEngine, MMCV, and MMDetection
+mim install "mmengine==0.10.4"
+mim install "mmcv==2.1.0"
+mim install "mmdet==3.2.0"
+
+# Clone the repository
+git clone https://github.com/vantage-in/satellite-pose-via-coordinate-classification.git
+cd satellite-pose-via-coordinate-classification
+
+pip install -r requirements.txt
+
+pip install -v -e .
+```
+
+## 🚀 Usage
+
+### Training
+
+To **train** the model with the dual-stage augmentation strategy:
+
+```bash
+python tools/train.py satellite/specc-s.py --work-dir work_dirs --no-validate
+
+```
+
+### Evaluation
+
+To **evaluate** on the SPEED+ benchmark (Lightbox/Sunlamp):
+
+```bash
+python tools/evaluate.py --dataset sunlamp --model specc-s
+
+```
+
+### Inference Demo
+
+To **visualize** the keypoint predictions and compute the performance:
+```bash
+python tools/visualize.py --images 0000{01..05}.jpg --dataset sunlamp
+
+```
+
+### Data Preparation
+
+Download the **[SPEED+](https://purl.stanford.edu/wv398fc4383)** dataset and generate **[SPIN](https://github.com/vpulab/SPIN)** data. Preprocess the images and the annotations following `tools/preprocess`. Organize them as follows:
+
+```
+speedplusv2/
+  ├── annotations/
+  │   ├── test_lightbox.json
+  │   ├── test_sunlamp.json
+  │   ├── train.json
+  │   ├── validation.json
+  ├── synthetic/ # original 
+  │   ├── images/
+  │   ├── masks/
+  │   ├── train.json
+  │   ├── validation.json
+  ├── train/ # preprocessed
+  │   ├── 000001.jpg
+  │   ├── 000002.jpg
+  │   ├── ...
+  ├── SPIN/ # generated
+  │   ├── 000001.png
+  │   ├── 000002.png
+  │   ├── ...
+  ├── val/ # preprocessed
+  │   ├── 000014.jpg
+  │   ├── 000021.jpg
+  │   ├── ...
+  ├── lightbox/ # original 
+  │   ├── images/
+  │   ├── masks/
+  │   ├── test.json
+  ├── lightbox_preprocessed/
+  │   ├── 000001.jpg
+  │   ├── 000002.jpg
+  │   ├── ...
+  ├── sunlamp/ # original 
+  │   ├── images/
+  │   ├── masks/
+  │   ├── test.json
+  ├── sunlamp_preprocessed/
+  │   ├── 000001.jpg
+  │   ├── 000002.jpg
+  │   ├── ...
+  ├── camera.json
+  └── tangoPoints.mat
+
+```
+
 
 ## 📊 Results
 
@@ -81,78 +185,7 @@ Experiments were conducted on the **SPEED+ benchmark** (Lightbox and Sunlamp dom
 > 
 > 
 
----
 
-## 🔧 Installation
-
-```bash
-# Create a conda environment
-conda create -n specc python=3.9 -y
-conda activate specc
-
-# Install PyTorch and CUDA
-conda install pytorch=2.1.2 torchvision=0.16.2 torchaudio=2.1.2 pytorch-cuda=12.1 -c pytorch -c nvidia
-
-# Install OpenMIM
-pip install -U openmim
-
-# Install MMEngine, MMCV, and MMDetection
-mim install "mmengine==0.10.4"
-mim install "mmcv==2.1.0"
-mim install "mmdet==3.2.0"
-
-# Clone the repository
-git clone [https://github.com/vantage-in/satellite-pose-via-coordinate-classification.git](https://github.com/vantage-in/satellite-pose-via-coordinate-classification.git)
-cd satellite-pose-via-coordinate-classification
-
-pip install -r requirements.txt
-
-pip install -v -e .
-```
-
-## 🚀 Usage
-
-### Data Preparation
-
-Download the SPEED+ dataset and SPIN generated data. Organize them as follows:
-
-```
-data/
-  ├── speed_plus/
-  │   ├── train/
-  │   └── test/
-  └── spin/
-
-```
-
-### Training
-
-To train the model with the dual-stage augmentation strategy:
-
-```bash
-# Example training command
-python tools/train.py satellite/rtmpose.py --work-dir work_dirs --no-validate
-
-```
-
-### Evaluation
-
-To evaluate on the SPEED+ benchmark (Lightbox/Sunlamp):
-
-```bash
-# Example evaluation command
-python test.py --checkpoint checkpoints/best_model.pth --refine True
-
-```
-
-### Inference Demo
-
-```bash
-python demo.py --image assets/sample_satellite.jpg
-
-```
-
----
 <!-- 
 ## 📝 Citation
 
@@ -175,4 +208,5 @@ If you find this work useful for your research, please cite:
 
 
 * Based on [MMPose](https://github.com/open-mmlab/mmpose) and [RTMPose](https://arxiv.org/abs/2303.07399).
-* Dataset provided by [SPEED+ Benchmark](https://www.google.com/search?q=https://kelvins.esa.int/speed-plus-competion/).
+* Dataset provided by [SPEED+ Benchmark](https://purl.stanford.edu/wv398fc4383).
+* Synthetic image generator provided by [SPIN](https://github.com/vpulab/SPIN)
