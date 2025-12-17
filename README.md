@@ -155,6 +155,14 @@ speedplusv2/
   └── tangoPoints.mat
 
 ```
+## 🏰 Pre-trained Models
+
+We provide pre-trained models on the SPEED+ dataset. All models are trained with the proposed Dual-Stage Augmentation strategy.
+
+| Model | Backbone | Input Size | Params | $e_{pose}$ (Lightbox) | Download |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Ours-S** | CSPNeXt-s | 224x224 | 18.6M | 0.144 | [Google Drive Link](https://drive.google.com/file/d/1gqxFLWu06r1suyK6N5lds6UfOilgfvtH/view?usp=drive_link) |
+| **Ours-M** | CSPNeXt-m | 224x224 | 26.6M | 0.120 | [Google Drive Link](https://drive.google.com/file/d/1mNxdrqv43aIsdeW6tKsxA09wbwi27tKs/view?usp=sharing) |
 
 
 ## 📊 Results
@@ -210,4 +218,5 @@ If you find this work useful for your research, please cite:
 * Based on [MMPose](https://github.com/open-mmlab/mmpose) and [RTMPose](https://arxiv.org/abs/2303.07399).
 * Dataset provided by [SPEED+ Benchmark](https://purl.stanford.edu/wv398fc4383).
 * Synthetic image generator provided by [SPIN](https://github.com/vpulab/SPIN)
+
 
