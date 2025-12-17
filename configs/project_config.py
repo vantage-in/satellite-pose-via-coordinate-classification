@@ -29,12 +29,12 @@ DATASETS = {
 MODELS = {
     'specc-s': {
         'config_file': 'satellite/specc-s.py',
-        'checkpoint_file': os.path.join(WORKSPACE_ROOT, 'rtmpose-s/epoch_280.pth'),
+        'checkpoint_file': os.path.join(WORKSPACE_ROOT, 'specc-s/model_specc-s-a5eced28_20251217.pth'),
         'input_size': (224, 224)
     },
     'specc-m': {
         'config_file': 'satellite/specc-m.py',
-        'checkpoint_file': os.path.join(WORKSPACE_ROOT, 'rtmpose-m_f/epoch_420.pth'), # 예시 경로
+        'checkpoint_file': os.path.join(WORKSPACE_ROOT, 'specc-m/model_specc-m-8bd94a4a_20251217.pth'), # 예시 경로
         'input_size': (224, 224)
     }
 }

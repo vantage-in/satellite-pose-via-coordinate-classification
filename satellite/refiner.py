@@ -1,3 +1,4 @@
+# Copyright (c) 2025 Yeongmok Cho
 import cv2
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
