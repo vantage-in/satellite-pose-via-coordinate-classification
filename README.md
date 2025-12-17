@@ -1,4 +1,4 @@
-# Efficient Monocular Spacecraft Pose Estimation 
+# Satellite Pose Estimation via Coordinate Classification and Distribution-Aware Refinement
 
 **Efficient Monocular Spacecraft Pose Estimation via Coordinate Classification and Distribution-Aware Refinement** 
 
@@ -210,3 +210,4 @@ If you find this work useful for your research, please cite:
 * Based on [MMPose](https://github.com/open-mmlab/mmpose) and [RTMPose](https://arxiv.org/abs/2303.07399).
 * Dataset provided by [SPEED+ Benchmark](https://purl.stanford.edu/wv398fc4383).
 * Synthetic image generator provided by [SPIN](https://github.com/vpulab/SPIN)
+
