@@ -1,7 +1,7 @@
 _base_ = ['../configs/_base_/default_runtime.py']
 
 custom_imports = dict(
-    imports=['cpu_augmentor', 'tensor_augmentor', 'bbox', 'dual_image_loader'],
+    imports=['augmentors.cpu_augmentor', 'augmentors.tensor_augmentor', 'augmentors.bbox', 'augmentors.dual_image_loader'],
     allow_failed_imports=False
 )
 
@@ -65,11 +65,10 @@ model = dict(
         mean=[123.675, 116.28, 103.53],
         std=[58.395, 57.12, 57.375],
         bgr_to_rgb=True,
-        # --- 통합 증강 프레임워크 적용 ---
+        # --- Custom Augmentation ---
         batch_augments=[
             dict(
                 type='CombinedAugmentation',
-                # rtmpose.py의 값과 동일하게 설정
                 mean=[123.675, 116.28, 103.53], 
                 std=[58.395, 57.12, 57.375],      
                 
@@ -78,11 +77,11 @@ model = dict(
                 prob_style = 0.2,
                 prob_deep = 0.2,
                 
-                # DeepAugment(CAE) 설정
-                cae_weights_path='/root/RTMPose/satellite/CAE_Weight/model_final.state', #
-                deepaug_sigma=0.1, # 논문[25]에서 사용한 노이즈 강도
+                # DeepAugment(CAE)
+                # cae_weights_path='./CAE_Weight/model_final.state',
+                # deepaug_sigma=0.1, 
                 
-                # RandConv 설정
+                # RandConv
                 randconv_kernel_size=3
             )
         ]
@@ -139,14 +138,14 @@ backend_args = dict(backend='local')
 train_pipeline = [
     dict(
         type='LoadImageFromDualDir',
-        aux_dir='/workspace/speedplusv2/SPIN/', # 질감이 다른 이미지들이 있는 폴더 경로
+        aux_dir='/workspace/speedplusv2/SPIN/', # Generated images
         prob=0.65
     ),
     dict(type='SetFullImageBBox'),
     dict(type='GetBBoxCenterScale', padding=1.0),
     dict(type='SPNAugmentation'), 
     dict(type='TopdownAffine', input_size=input_size),
-    dict(type='GenerateTarget', encoder=codec), # label 변환
+    dict(type='GenerateTarget', encoder=codec), 
     dict(type='PackPoseInputs')
 ]
 val_pipeline = [
@@ -162,14 +161,14 @@ train_pipeline_stage2 = [
     dict(type='GetBBoxCenterScale', padding=1.0),
     dict(type='SPNAugmentation'), 
     dict(type='TopdownAffine', input_size=input_size),
-    dict(type='GenerateTarget', encoder=codec), # label 변환
+    dict(type='GenerateTarget', encoder=codec),
     dict(type='PackPoseInputs')
 ]
 
 # data loaders
 train_dataloader = dict(
     batch_size=train_batch_size,
-    num_workers=10, # cpu 코어 수
+    num_workers=10,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     dataset=dict(
