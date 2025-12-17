@@ -17,7 +17,7 @@ from mmpose.utils import register_all_modules
 # ------------------------------------------------------------------------------
 # 1. Configuration
 # ------------------------------------------------------------------------------
-CONFIG_FILE = 'satellite/rtmpose-s_satellite.py'
+CONFIG_FILE = 'satellite/specc-s.py'
 CHECKPOINT_FILE = '/workspace/rtmpose-s/epoch_280.pth'
 
 POSE_GT_FILE = '/workspace/speedplusv2/lightbox/test.json'
